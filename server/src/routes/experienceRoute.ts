@@ -1,14 +1,15 @@
 import express from "express";
+const { createExperience, getExperiences, getExperience, updateExperience, deleteExperience } = require("../controllers/experienceController")
 const router = express.Router();
 // get all experiences
-router.get("/");
+router.get("/", getExperiences);
 // get experience by id
-router.get("/:id");
+router.get("/:id", getExperience);
 // create new experience
-router.post("/");
+router.post("/", createExperience);
 // update experience
-router.patch("/:id");
+router.patch("/:id", updateExperience);
 // delete experience
-router.delete("/:id");
+router.delete("/:id", deleteExperience);
 
 module.exports = router;
