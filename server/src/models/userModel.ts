@@ -24,21 +24,22 @@ const UserSchema = new Schema<IUser>({
   _id: String,
   firstName: {
     type: String,
-    require: [true, "first name is required"],
+    required: [true, "first name is required"],
     trim: true,
   },
   lastName: {
     type: String,
-    require: [true, "last name is required"],
+    required: [true, "last name is required"],
     trim: true,
   },
   password: {
     type: String,
+    required: [true, "password is required"],
     trim: true,
   },
   email: {
     type: String,
-    require: [true, "email is required"],
+    required: [true, "email is required"],
     unique: true,
     trim: true,
     validate: {
@@ -52,7 +53,7 @@ const UserSchema = new Schema<IUser>({
   role: {
     type: String,
     enum: ["admin", "employee", "client"],
-    require: [true, "role is required"],
+    required: true,
   },
 });
 
@@ -77,6 +78,6 @@ UserSchema.methods.comparePassword = async function (
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-const UserModel = mongoose.model<IUser>("users", UserSchema);
+const UserModel = mongoose.model<IUser>("user", UserSchema);
 
 module.exports = UserModel;
