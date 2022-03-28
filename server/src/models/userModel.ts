@@ -21,6 +21,7 @@ interface Props {
 }
 
 const UserSchema = new Schema<IUser>({
+  _id: String,
   firstName: {
     type: String,
     require: [true, "first name is required"],
@@ -33,12 +34,12 @@ const UserSchema = new Schema<IUser>({
   },
   password: {
     type: String,
-    require: [true, "password is required"],
     trim: true,
   },
   email: {
     type: String,
     require: [true, "email is required"],
+    unique: true,
     trim: true,
     validate: {
       validator: (value: String) => validator.isEmail(value),
@@ -76,6 +77,6 @@ UserSchema.methods.comparePassword = async function (
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-const UserModel = mongoose.model<IUser>("user", UserSchema);
+const UserModel = mongoose.model<IUser>("users", UserSchema);
 
-export default UserModel;
+module.exports = UserModel;
