@@ -14,7 +14,7 @@ app.use(helmet());
 app.use(json());
 
 // routes
-// app.use("/experiences", experienceRouter);
+app.use("/experiences", experienceRouter);
 app.use("/users", userRouter);
 app.use(errorMiddleware);
 
