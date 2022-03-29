@@ -14,7 +14,7 @@ module.exports = async (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer ")
   ) {
-    const bearerToken = req.headers.authorization.substr(7);
+    const bearerToken = req.headers.authorization.substring(7);
 
     try {
       const userClaims = await auth.verifyIdToken(bearerToken);

@@ -16,4 +16,5 @@ const firebaseConfig = {
 module.exports = {
   DB_URI: process.env.MONGODB_URI,
   firebaseConfig: firebaseConfig,
+  SESSION_SECRET: process.env.SESSION_SECRET,
 };
