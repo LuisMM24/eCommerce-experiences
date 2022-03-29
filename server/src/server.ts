@@ -12,21 +12,6 @@ const userRouter = require("./routes/userRoute");
 const session = require("express-session");
 
 const app = express();
-// cookie-session settings
-// const expiryDate = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
-// app.use(
-//   session({
-//     secret: SESSION_SECRET,
-//     name: "sessionId",
-//     cookie: {
-//       secure: true,
-//       httpOnly: true,
-//       domain: "example.com",
-//       path: "foo/bar",
-//       expires: expiryDate,
-//     },
-//   })
-// );
 
 app.use(cors());
 app.use(helmet());
