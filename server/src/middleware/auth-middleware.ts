@@ -31,7 +31,7 @@ module.exports = async (
   } else {
     return res.status(401).send({
       data: null,
-      error: "Unauthorized",
+      error: "You need to login in order to access this page",
     });
   }
 };
