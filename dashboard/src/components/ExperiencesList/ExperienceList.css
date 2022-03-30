@@ -1,0 +1,13 @@
+.list-container {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    margin-top: 80px;
+}
+.experiences-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    gap: 1em;
+    padding: 1em;
+}

@@ -9,6 +9,8 @@ import {
     Anchor,
     ScrollArea,
     useMantineTheme,
+    Title,
+    Container
     } from '@mantine/core';
     import { Pencil, Trash } from 'tabler-icons-react';
 
@@ -67,19 +69,20 @@ export function UsersTable({ data }: UsersTableProps) {
 ));
 
     return (
-        <ScrollArea>
-            <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Role</th>
-                    <th>Email</th>
-                    {/* <th>Phone</th> */}
-                    <th />
-                </tr>
-                </thead>
-                <tbody>{rows}</tbody>
-            </Table>
-        </ScrollArea>
+            <ScrollArea sx={{ width: '100%', padding: '24px', marginTop: '80px' }}>
+                <Title order={3}>Users</Title>
+                <Table sx={{ minWidth: 800 }} verticalSpacing="md">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Email</th>
+                        {/* <th>Phone</th> */}
+                        <th />
+                    </tr>
+                    </thead>
+                    <tbody>{rows}</tbody>
+                </Table>
+            </ScrollArea>
     );
 }

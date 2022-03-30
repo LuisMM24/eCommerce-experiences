@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Heart } from 'tabler-icons-react';
 import {
     Card,
@@ -11,6 +12,8 @@ import {
     createStyles,
     useMantineTheme,
 } from '@mantine/core';
+
+import './ExperienceCard.css';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -38,20 +41,22 @@ const useStyles = createStyles((theme) => ({
     }));
 
     interface BadgeCardProps {
+    _id: string
     image: string;
     title: string;
-    country: string;
-    description: string;
+    location: string;
+    availableSlots: string;
+    bookedSlots: string;
+    level: string;
     // badges: {
     //     emoji: string;
     //     label: string;
     // }[];
     }
 
-    export function ExperienceCard({ image, title, description, country }: BadgeCardProps) {
+    export function ExperienceCard({ image, title, location, availableSlots, bookedSlots, level, _id }: BadgeCardProps) {
     const { classes } = useStyles();
     const theme = useMantineTheme();
-
     // const features = badges.map((badge) => (
     //     <Badge
     //     color={theme.colorScheme === 'dark' ? 'dark' : 'gray'}
@@ -73,29 +78,33 @@ const useStyles = createStyles((theme) => ({
             <Text size="lg" weight={500}>
                 {title}
             </Text>
-            <Badge size="sm">{country}</Badge>
+            <Badge size="sm">{location}</Badge>
             </Group>
-            <Text size="sm" mt="xs">
-            {description}
-            </Text>
         </Card.Section>
 
         <Card.Section className={classes.section}>
-            <Text mt="md" className={classes.label} color="dimmed">
-            Perfect for you, if you enjoy
-            </Text>
+            <div className="flex-row-between">
+                <Text mt="md" className={classes.label} color="dimmed">
+                Level: {level}
+                </Text>
+                <Text size="sm" mt="md" className={classes.label} color="dimmed">
+                {bookedSlots}/{availableSlots} booked
+                </Text>
+            </div>
             {/* <Group spacing={7} mt={5}>
             {features}
             </Group> */}
         </Card.Section>
 
         <Group mt="xs">
-            <Button radius="md" style={{ flex: 1 }}>
-            Show details
-            </Button>
-            <ActionIcon variant="default" radius="md" size={36}>
+            <Link to={`/experiences/${_id}`}>
+                <Button radius="md" style={{ flex: 1 }}>
+                Show details
+                </Button>
+            </Link>
+            {/* <ActionIcon variant="default" radius="md" size={36}>
             <Heart size={18} className={classes.like} />
-            </ActionIcon>
+            </ActionIcon> */}
         </Group>
         </Card>
     );

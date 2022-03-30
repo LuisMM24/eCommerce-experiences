@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Navbar, SegmentedControl, Text, createStyles } from '@mantine/core';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom'; 
+import { Navbar, SegmentedControl, Container, Text, Button, Group, createStyles } from '@mantine/core';
 import {
     ShoppingCart,
     License,
@@ -19,7 +20,9 @@ import {
     SwitchHorizontal,
     } from 'tabler-icons-react';
 
-    const useStyles = createStyles((theme, _params, getRef) => {
+import ButtonsGroup from '../ButtonsGroup/ButtonsGroup'
+
+const useStyles = createStyles((theme, _params, getRef) => {
     const icon = getRef('icon');
 
     return {
@@ -102,60 +105,72 @@ import {
     ],
     };
 
-export function NavbarSegmented() {
-    const { classes, cx } = useStyles();
-    const [section, setSection] = useState('users');
-    const [active, setActive] = useState('Billing');
+type CardProps = {
+    section: string,
+    setSection: any
+}
 
-    const links = tabs[section].map((item:any) => (
-    <a
-        className={cx(classes.link, { [classes.linkActive]: item.label === active })}
-        href={item.link}
-        key={item.label}
-        onClick={(event) => {
-        event.preventDefault();
-        setActive(item.label);
-        }}
-    >
-        <item.icon className={classes.linkIcon} />
-        <span>{item.label}</span>
-    </a>
-    ));
+const NavbarSegmented = ({ section, setSection }: CardProps): JSX.Element => {
+    const { classes, cx } = useStyles();
+    const [active, setActive] = useState('Orders');
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        navigate(`/dashboard/${section}`)
+    }, [section])
+
+    // const links = tabs[section].map((item:any) => (
+    // <a
+    //     className={cx(classes.link, { [classes.linkActive]: item.label === active })}
+    //     href={item.link}
+    //     key={item.label}
+    //     onClick={(event) => {
+    //     event.preventDefault();
+    //     setActive(item.label);
+    //     }}
+    // >
+    //     <item.icon className={classes.linkIcon} />
+    //     <span>{item.label}</span>
+    // </a>
+    // ));
 
     return (
-    <Navbar height={840} width={{ sm: 300 }} p="md" className={classes.navbar}>
+    <Navbar height={840} width={{ sm: 300 }} p="md" className={classes.navbar} sx={{position: 'sticky', top: 0, left: 0}}>
         <Navbar.Section>
-        <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
-            admin@experiences.io
-        </Text>
+            <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
+                admin@experiences.io
+            </Text>
 
-        <SegmentedControl
-            value={section}
-            onChange={setSection}
-            transitionTimingFunction="ease"
-            fullWidth
-            data={[
-            { label: 'Users', value: 'users' },
-            { label: 'Experiences', value: 'experiences' },
-            ]}
-        />
+            {/* <SegmentedControl
+                value={section}
+                onChange={() => setSection(section)}
+                transitionTimingFunction="ease"
+                fullWidth
+                data={[
+                { label: 'Users', value: 'users' },
+                { label: 'Experiences', value: 'experiences' },
+                ]}
+            /> */}
+            <ButtonsGroup />
         </Navbar.Section>
 
-        <Navbar.Section grow mt="xl">
+        {/* <Navbar.Section grow mt="xl">
         {links}
-        </Navbar.Section>
+        </Navbar.Section> */}
 
         <Navbar.Section className={classes.footer}>
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-            <SwitchHorizontal className={classes.linkIcon} />
-            <span>Change users</span>
-        </a>
+            <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+                <SwitchHorizontal className={classes.linkIcon} />
+                <span>Change users</span>
+            </a>
 
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-            <Logout className={classes.linkIcon} />
-            <span>Logout</span>
-        </a>
+            <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+                <Logout className={classes.linkIcon} />
+                <span>Logout</span>
+            </a>
         </Navbar.Section>
     </Navbar>
     );
 }
+export default NavbarSegmented;

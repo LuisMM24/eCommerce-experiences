@@ -1,0 +1,11 @@
+ul {
+    list-style-type: none;
+}
+li {
+    max-width: 300px;
+}
+.flex-row-between{
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+}
