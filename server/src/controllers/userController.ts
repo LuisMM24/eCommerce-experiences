@@ -44,20 +44,14 @@ const loginUser = async (
   res: Response,
   next: NextFunction
 ): Promise<Response> => {
-  const { email, password } = req.user;
+  const { email } = req.user;
   try {
     const user = await User.findOne({ email: email });
     if (user) {
-      const isValidPass = user.password === password;
-      if (isValidPass) {
-        return res.sendStatus(200);
-      }
-      return res.status(400).send({
-        error: "bad password",
-      });
+      return res.sendStatus(200);
     }
-    res.status(400).send({
-      error: "bad email",
+    return res.status(400).send({
+      error: "user not found",
     });
   } catch (err) {
     next(err);
