@@ -1,4 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
+// router
+import { useRouter } from "next/router";
 import { useForm, useToggle, upperFirst } from "@mantine/hooks";
 import {
   TextInput,
@@ -29,6 +31,7 @@ interface IValidateFields {
 
 export function AuthenticationForm(props: PaperProps<"div">) {
   const [type, toggle] = useToggle("login", ["login", "register"]);
+  const router = useRouter();
   const setRegisterRules = (value: string): boolean => {
     if (type === "register") {
       return value.length < 2;
@@ -37,12 +40,17 @@ export function AuthenticationForm(props: PaperProps<"div">) {
   };
 
   const {
+    currentUser,
     hasError,
     isLoading,
     facebookSignUpHandler,
     emailAndPasswordSignUpHandler,
     googleSignUpHandler,
   } = useContext(authContext);
+
+  useEffect(() => {
+    if (currentUser) router.push("/");
+  }, [currentUser, router]);
 
   const form = useForm({
     initialValues: {

@@ -1,3 +1,4 @@
+import { User } from "firebase/auth";
 import React, { createContext, useState } from "react";
 import { useAuth } from "../firebase/firebase";
 //firebase fn
@@ -20,7 +21,7 @@ interface FormValues {
 }
 
 type AuthContextType = {
-  currentUser: void | null;
+  currentUser: User | null;
   hasError: boolean;
   isLoading: boolean;
   googleSignUpHandler: (type: string) => void | Promise<void>;
@@ -50,7 +51,6 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     try {
       await signUpWithGoogle();
       await syncUserData(type);
-      console.log("Done!");
     } catch (err: any) {
       console.log(err.message);
     }

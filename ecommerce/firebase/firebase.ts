@@ -10,8 +10,9 @@ import {
   UserCredential,
   onAuthStateChanged,
   createUserWithEmailAndPassword,
+  User,
 } from "firebase/auth";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
@@ -64,9 +65,14 @@ export const signOut = (): Promise<void> => {
 };
 
 export const useAuth = () => {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log(user);
+      if (user) {
+        setCurrentUser(user);
+      }
+      setCurrentUser(null);
     });
   }, []);
+  return currentUser;
 };
