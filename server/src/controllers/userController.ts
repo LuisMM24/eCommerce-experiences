@@ -1,12 +1,21 @@
 const { User } = require("../models");
 import { Request, Response, NextFunction } from "express";
+import { Req } from "../middleware/auth-middleware";
 
 const signUp = async (
-  req: Request,
+  req: Req,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { firstName, lastName, email, role, password, uid } = req.body;
+  const {
+    uid,
+    firstName = null,
+    lastName = null,
+    email,
+    password = null,
+    picture = null,
+    role = "client",
+  } = req.user;
   try {
     const user = await User.findOne({ _id: uid });
     if (user) {
@@ -21,9 +30,35 @@ const signUp = async (
       lastName: lastName,
       email: email,
       password: password,
+      profileImage: picture,
       role: role,
     });
     res.sendStatus(201);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const loginUser = async (
+  req: Req,
+  res: Response,
+  next: NextFunction
+): Promise<Response> => {
+  const { email, password } = req.user;
+  try {
+    const user = await User.findOne({ email: email });
+    if (user) {
+      const isValidPass = user.password === password;
+      if (isValidPass) {
+        return res.sendStatus(200);
+      }
+      return res.status(400).send({
+        error: "bad password",
+      });
+    }
+    res.status(400).send({
+      error: "bad email",
+    });
   } catch (err) {
     next(err);
   }
@@ -83,33 +118,6 @@ const deleteUser = async (
   try {
     await User.findOneAndDelete({ _id: id });
     res.sendStatus(200);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const loginUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  const { email, password } = req.body;
-  try {
-    const user = User.findOne({ email: email });
-    if (user) {
-      const isValidPass = User.comparePassword(password);
-      if (isValidPass) {
-        res.sendStatus(200);
-        return;
-      }
-      res.status(400).send({
-        error: "bad password",
-      });
-      return;
-    }
-    res.status(400).send({
-      error: "bad email",
-    });
   } catch (err) {
     next(err);
   }

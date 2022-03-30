@@ -18,12 +18,10 @@ const UserSchema = new Schema<IUser>({
   _id: String,
   firstName: {
     type: String,
-    required: [true, "first name is required"],
     trim: true,
   },
   lastName: {
     type: String,
-    required: [true, "last name is required"],
     trim: true,
   },
   email: {

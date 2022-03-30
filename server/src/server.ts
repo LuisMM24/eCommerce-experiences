@@ -1,5 +1,4 @@
 import express from "express";
-const { SESSION_SECRET } = require("./config/config");
 const helmet = require("helmet");
 const cors = require("cors");
 const { json } = require("body-parser");
@@ -8,8 +7,6 @@ const errorMiddleware = require("./middleware/error-middleware");
 // routes
 const experienceRouter = require("./routes/experienceRoute");
 const userRouter = require("./routes/userRoute");
-// cookies securely
-const session = require("express-session");
 
 const app = express();
 
