@@ -61,6 +61,7 @@ export const getUserToken = (): Promise<string> | null => {
 };
 
 export const signOut = (): Promise<void> => {
+  console.log("paso");
   return auth.signOut();
 };
 
@@ -69,9 +70,9 @@ export const useAuth = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setCurrentUser(user);
+        return setCurrentUser(user);
       }
-      setCurrentUser(null);
+      return setCurrentUser(null);
     });
   }, []);
   return currentUser;
