@@ -28,8 +28,11 @@ module.exports = async (
       const userClaims = await auth.verifyIdToken(bearerToken);
 
       const { uid, email, picture } = userClaims;
-      console.log(userClaims);
+      // if user sign up with firstname and lastname
+      const { firstName, lastName } = req.body;
       req.user = {
+        firstName: firstName,
+        lastName: lastName,
         email: email,
         uid: uid,
         picture: picture,

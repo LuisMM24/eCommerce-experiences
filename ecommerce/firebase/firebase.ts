@@ -9,8 +9,10 @@ import {
   PopupRedirectResolver,
   UserCredential,
   onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  User,
 } from "firebase/auth";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
@@ -27,17 +29,24 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth();
 
-export const signUpWithGoogle = (): PopupRedirectResolver => {
+export const signUpWithGoogle = (): Promise<UserCredential> => {
   const googleProvider = new GoogleAuthProvider();
   return signInWithPopup(auth, googleProvider);
 };
 
-export const signUpWithFacebook = (): PopupRedirectResolver => {
+export const signUpWithFacebook = (): Promise<UserCredential> => {
   const facebookProvider = new FacebookAuthProvider();
   return signInWithPopup(auth, facebookProvider);
 };
 
 export const signUpWithEmailAndPassword = (
+  email: string,
+  password: string
+): Promise<UserCredential> => {
+  return createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const LoginWithEmailAndPassword = (
   email: string,
   password: string
 ): Promise<UserCredential> => {
@@ -56,9 +65,14 @@ export const signOut = (): Promise<void> => {
 };
 
 export const useAuth = () => {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log(user);
+      if (user) {
+        setCurrentUser(user);
+      }
+      setCurrentUser(null);
     });
   }, []);
+  return currentUser;
 };

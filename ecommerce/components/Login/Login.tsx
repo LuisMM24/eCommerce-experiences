@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+// router
+import { useRouter } from "next/router";
 import { useForm, useToggle, upperFirst } from "@mantine/hooks";
 import {
   TextInput,
@@ -9,7 +11,6 @@ import {
   PaperProps,
   Button,
   Divider,
-  Checkbox,
   Anchor,
 } from "@mantine/core";
 import { GoogleButton, FacebookButton } from "../SocialButtons/SocialButtons";
@@ -18,9 +19,39 @@ import { GoogleButton, FacebookButton } from "../SocialButtons/SocialButtons";
 // get pass strength
 import { getStrength } from "./PasswordStrength/PasswordStrength";
 import { PasswordStrength } from "./PasswordStrength/PasswordStrength";
+import { authContext } from "../../context/authContext";
+import { Value } from "sass";
+
+interface IValidateFields {
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  password: string;
+}
 
 export function AuthenticationForm(props: PaperProps<"div">) {
   const [type, toggle] = useToggle("login", ["login", "register"]);
+  const router = useRouter();
+  const setRegisterRules = (value: string): boolean => {
+    if (type === "register") {
+      return value.length < 2;
+    }
+    return value === value;
+  };
+
+  const {
+    currentUser,
+    hasError,
+    isLoading,
+    facebookSignUpHandler,
+    emailAndPasswordSignUpHandler,
+    googleSignUpHandler,
+  } = useContext(authContext);
+
+  useEffect(() => {
+    if (currentUser) router.push("/");
+  }, [currentUser, router]);
+
   const form = useForm({
     initialValues: {
       firstName: "",
@@ -30,9 +61,9 @@ export function AuthenticationForm(props: PaperProps<"div">) {
     },
 
     validationRules: {
-      firstName: (value) => value.length > 2,
-      lastName: (value) => value.length > 2,
-      email: (val) => /^\S+@\S+$/.test(val),
+      firstName: (value) => setRegisterRules(value),
+      lastName: (value) => setRegisterRules(value),
+      email: (value) => /^\S+@\S+$/.test(value),
       password: (value) => getStrength(value) === 100,
     },
   });
@@ -44,15 +75,19 @@ export function AuthenticationForm(props: PaperProps<"div">) {
       </Text>
 
       <Group grow mb="md" mt="md">
-        <GoogleButton radius="xl">Google</GoogleButton>
-        <FacebookButton radius="xl">Facebook</FacebookButton>
+        <GoogleButton onClick={() => googleSignUpHandler(type)} radius="xl">
+          Google
+        </GoogleButton>
+        <FacebookButton onClick={() => facebookSignUpHandler(type)} radius="xl">
+          Facebook
+        </FacebookButton>
       </Group>
 
       <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
       <form
         onSubmit={form.onSubmit((values) => {
-          console.log(values);
+          emailAndPasswordSignUpHandler(type, values);
         })}
       >
         <Group direction="column" grow>
@@ -102,6 +137,11 @@ export function AuthenticationForm(props: PaperProps<"div">) {
               required
               label="Password"
               placeholder="Introduce your password"
+              value={form.values.password}
+              onChange={(event) =>
+                form.setFieldValue("password", event.currentTarget.value)
+              }
+              error={hasError && "Invalid password"}
             />
           )}
 
@@ -129,7 +169,9 @@ export function AuthenticationForm(props: PaperProps<"div">) {
               ? "Already have an account? Login"
               : "Don't have an account? Register"}
           </Anchor>
-          <Button type="submit">{upperFirst(type)}</Button>
+          <Button type="submit" disabled={isLoading}>
+            {upperFirst(type)}
+          </Button>
         </Group>
       </form>
     </Paper>
