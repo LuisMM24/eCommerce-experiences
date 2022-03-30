@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, useToggle, upperFirst } from "@mantine/hooks";
 import {
   TextInput,
@@ -9,18 +9,76 @@ import {
   PaperProps,
   Button,
   Divider,
-  Checkbox,
   Anchor,
 } from "@mantine/core";
 import { GoogleButton, FacebookButton } from "../SocialButtons/SocialButtons";
 
+//firebase fn
+import {
+  signUpWithEmailAndPassword,
+  signUpWithFacebook,
+  signUpWithGoogle,
+  LoginWithEmailAndPassword,
+} from "../../firebase/firebase";
 // register form
 // get pass strength
 import { getStrength } from "./PasswordStrength/PasswordStrength";
 import { PasswordStrength } from "./PasswordStrength/PasswordStrength";
+import { syncUserData } from "../../utils/auth-request";
+
+interface FormValues {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
 
 export function AuthenticationForm(props: PaperProps<"div">) {
+  const [hasError, setHasError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [type, toggle] = useToggle("login", ["login", "register"]);
+
+  const googleSignUpHandler = async (): Promise<void> => {
+    try {
+      await signUpWithGoogle();
+      await syncUserData(type);
+      console.log("Done!");
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
+  const emailAndPasswordSignUpHandler = async (
+    formValues: FormValues
+  ): Promise<void> => {
+    const { email, password, firstName, lastName } = formValues;
+    setIsLoading(true);
+    try {
+      const test =
+        type === "register"
+          ? await signUpWithEmailAndPassword(email, password)
+          : await LoginWithEmailAndPassword(email, password);
+      console.log(test);
+      await syncUserData(type, {
+        firstName: firstName,
+        lastName: lastName,
+      });
+    } catch (err: any) {
+      setHasError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const facebookSignUpHandler = async (): Promise<void> => {
+    try {
+      await signUpWithFacebook();
+      await syncUserData(type);
+      console.log("Done!");
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
   const form = useForm({
     initialValues: {
       firstName: "",
@@ -44,15 +102,19 @@ export function AuthenticationForm(props: PaperProps<"div">) {
       </Text>
 
       <Group grow mb="md" mt="md">
-        <GoogleButton radius="xl">Google</GoogleButton>
-        <FacebookButton radius="xl">Facebook</FacebookButton>
+        <GoogleButton onClick={googleSignUpHandler} radius="xl">
+          Google
+        </GoogleButton>
+        <FacebookButton onClick={facebookSignUpHandler} radius="xl">
+          Facebook
+        </FacebookButton>
       </Group>
 
       <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
       <form
         onSubmit={form.onSubmit((values) => {
-          console.log(values);
+          emailAndPasswordSignUpHandler(values);
         })}
       >
         <Group direction="column" grow>
@@ -102,6 +164,11 @@ export function AuthenticationForm(props: PaperProps<"div">) {
               required
               label="Password"
               placeholder="Introduce your password"
+              value={form.values.password}
+              onChange={(event) =>
+                form.setFieldValue("password", event.currentTarget.value)
+              }
+              error={hasError && "Invalid password"}
             />
           )}
 
@@ -129,7 +196,9 @@ export function AuthenticationForm(props: PaperProps<"div">) {
               ? "Already have an account? Login"
               : "Don't have an account? Register"}
           </Anchor>
-          <Button type="submit">{upperFirst(type)}</Button>
+          <Button type="submit" disabled={isLoading}>
+            {upperFirst(type)}
+          </Button>
         </Group>
       </form>
     </Paper>
