@@ -1,8 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-const auth = require("../firebase/firebase");
+const { auth } = require("../firebase/firebase");
 
-interface Req extends Request {
-  user: Object;
+export interface Req extends Request {
+  user: {
+    uid: string;
+    firstName?: String;
+    lastName?: string;
+    email: string;
+    password?: string;
+    picture?: string;
+    role?: string;
+  };
 }
 
 module.exports = async (
@@ -19,10 +27,12 @@ module.exports = async (
     try {
       const userClaims = await auth.verifyIdToken(bearerToken);
 
-      const { email, uid } = userClaims;
+      const { uid, email, picture } = userClaims;
+      console.log(userClaims);
       req.user = {
         email: email,
         uid: uid,
+        picture: picture,
       };
       next();
     } catch (err) {
