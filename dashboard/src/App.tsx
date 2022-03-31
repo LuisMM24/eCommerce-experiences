@@ -23,10 +23,9 @@ function App() {
         <Router>
         <Navbar section={section} setSection={setSection}/>
           <Routes>
-          <Route path='/dashboard/experiences' element={<ExperiencesList />}>
-            <Route path='/dashboard/experiences:experienceId' element={<Experience />} />
-          </Route>
+          <Route path='/dashboard/experiences' element={<ExperiencesList />} />
           <Route path='/dashboard/users' element={<Users data={users} />} />
+          <Route path='/dashboard/experiences/:experienceId' element={<Experience />} />
 
           {/* <div className="App flex-row">
               <Navbar section={section} setSection={setSection}/>
@@ -39,7 +38,7 @@ function App() {
                   )}
               </div>
             </div> */}
-        </Routes>
+          </Routes>
         </Router>
       </MantineProvider>
     </QueryClientProvider>

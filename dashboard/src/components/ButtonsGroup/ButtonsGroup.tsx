@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createStyles, Group, Button } from '@mantine/core';
-import { Link, useSearchParams, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
     button: {

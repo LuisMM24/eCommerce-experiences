@@ -54,7 +54,7 @@ const useStyles = createStyles((theme) => ({
     // }[];
     }
 
-    export function ExperienceCard({ image, title, location, availableSlots, bookedSlots, level, _id }: BadgeCardProps) {
+const ExperienceCard = ({ image, title, location, availableSlots, bookedSlots, level, _id }: BadgeCardProps) => {
     const { classes } = useStyles();
     const theme = useMantineTheme();
     // const features = badges.map((badge) => (
@@ -69,43 +69,45 @@ const useStyles = createStyles((theme) => ({
 
     return (
         <Card withBorder radius="md" p="md" className={classes.card}>
-        <Card.Section>
-            <Image src={image} alt={title} height={180} />
-        </Card.Section>
+            <Card.Section>
+                <Image src={image} alt={title} height={180} />
+            </Card.Section>
 
-        <Card.Section className={classes.section} mt="md">
-            <Group position="apart">
-            <Text size="lg" weight={500}>
-                {title}
-            </Text>
-            <Badge size="sm">{location}</Badge>
+            <Card.Section className={classes.section} mt="md">
+                <Group position="apart">
+                <Text size="lg" weight={500}>
+                    {title}
+                </Text>
+                <Badge size="sm">{location}</Badge>
+                </Group>
+            </Card.Section>
+
+            <Card.Section className={classes.section}>
+                <div className="flex-row-between">
+                    <Text mt="md" className={classes.label} color="dimmed">
+                    Level: {level}
+                    </Text>
+                    <Text size="sm" mt="md" className={classes.label} color="dimmed">
+                    {bookedSlots}/{availableSlots} booked
+                    </Text>
+                </div>
+                {/* <Group spacing={7} mt={5}>
+                {features}
+                </Group> */}
+            </Card.Section>
+
+            <Group mt="xs">
+                <Link to={`/dashboard/experiences/${_id}`}>
+                    <Button radius="md" style={{ flex: 1 }}>
+                    Show details
+                    </Button>
+                </Link>
+                {/* <ActionIcon variant="default" radius="md" size={36}>
+                <Heart size={18} className={classes.like} />
+                </ActionIcon> */}
             </Group>
-        </Card.Section>
-
-        <Card.Section className={classes.section}>
-            <div className="flex-row-between">
-                <Text mt="md" className={classes.label} color="dimmed">
-                Level: {level}
-                </Text>
-                <Text size="sm" mt="md" className={classes.label} color="dimmed">
-                {bookedSlots}/{availableSlots} booked
-                </Text>
-            </div>
-            {/* <Group spacing={7} mt={5}>
-            {features}
-            </Group> */}
-        </Card.Section>
-
-        <Group mt="xs">
-            <Link to={`/experiences/${_id}`}>
-                <Button radius="md" style={{ flex: 1 }}>
-                Show details
-                </Button>
-            </Link>
-            {/* <ActionIcon variant="default" radius="md" size={36}>
-            <Heart size={18} className={classes.like} />
-            </ActionIcon> */}
-        </Group>
         </Card>
     );
 }
+
+export default ExperienceCard;

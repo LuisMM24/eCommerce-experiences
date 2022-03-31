@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ExperienceCard } from '../ExperienceCard/ExperienceCard'
+import ExperienceCard from '../ExperienceCard/ExperienceCard'
 import { Title, ScrollArea } from '@mantine/core';
 import useExperiences from '../../query-hooks/useExperiences';
 import './ExperienceList.css';
