@@ -61,7 +61,6 @@ export const getUserToken = (): Promise<string> | null => {
 };
 
 export const signOut = (): Promise<void> => {
-  console.log("paso");
   return auth.signOut();
 };
 

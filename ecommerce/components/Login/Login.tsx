@@ -41,9 +41,7 @@ export function AuthenticationForm(props: PaperProps<"div">) {
   } = useContext(authContext);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (currentUser) router.push("/");
-    }, 5000);
+    if (currentUser) router.push("/");
   }, [currentUser, router]);
 
   const form = useForm({

@@ -21,8 +21,8 @@ import { authContext } from "../../context/authContext";
 
 const useStyles = createStyles((theme) => ({
   header: {
-    backgroundColor: theme.colors.cyan,
-    borderBottom: 0,
+    backgroundColor: theme.colors.white,
+    borderBottom: "1px solid rgb(233, 236, 239)",
   },
 
   inner: {
@@ -51,7 +51,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   user: {
-    color: theme.white,
+    color: theme.black,
     padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
     borderRadius: theme.radius.sm,
     transition: "background-color 100ms ease",
@@ -71,12 +71,15 @@ const useStyles = createStyles((theme) => ({
     padding: "8px 12px",
     borderRadius: theme.radius.sm,
     textDecoration: "none",
-    color: theme.white,
+    color: theme.black,
     fontSize: theme.fontSizes.sm,
     fontWeight: 500,
 
     "&:hover": {
-      backgroundColor: theme.colors.cyan[theme.colorScheme === "dark" ? 7 : 5],
+      backgroundColor:
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[6]
+          : theme.colors.gray[0],
     },
   },
 
@@ -99,11 +102,11 @@ export function HeaderMenuColored({ links }: HeaderSearchProps) {
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const { classes, theme, cx } = useStyles();
   const router = useRouter();
+
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
       <Menu.Item key={item.link}>{item.label}</Menu.Item>
     ));
-
     if (menuItems) {
       return (
         <Menu
@@ -171,7 +174,7 @@ export function HeaderMenuColored({ links }: HeaderSearchProps) {
                   >
                     <Group spacing={7}>
                       <Avatar
-                        src={"https://i.ibb.co/fdP2jGt/fish-icon.png"}
+                        src={currentUser.photoURL}
                         alt={"luis"}
                         radius="xl"
                         size={20}
@@ -179,10 +182,12 @@ export function HeaderMenuColored({ links }: HeaderSearchProps) {
                       <Text
                         weight={500}
                         size="sm"
-                        sx={{ lineHeight: 1, color: theme.white }}
+                        sx={{ lineHeight: 1, color: theme.black }}
                         mr={3}
                       >
-                        {"Luis Molina"}
+                        {currentUser.displayName
+                          ? currentUser.displayName
+                          : currentUser.email}
                       </Text>
                       <ChevronDown size={12} />
                     </Group>
@@ -193,7 +198,10 @@ export function HeaderMenuColored({ links }: HeaderSearchProps) {
                 <Menu.Item icon={<Settings size={14} />}>
                   Account settings
                 </Menu.Item>
-                <Menu.Item onClick={signOut} icon={<Logout size={14} />}>
+                <Menu.Item
+                  onClick={async () => await signOut()}
+                  icon={<Logout size={14} />}
+                >
                   Logout
                 </Menu.Item>
               </Menu>
@@ -214,7 +222,6 @@ export function HeaderMenuColored({ links }: HeaderSearchProps) {
             onClick={() => toggleOpened()}
             className={classes.burger}
             size="sm"
-            color="#fff"
           />
         </div>
       </Container>
