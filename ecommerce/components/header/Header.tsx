@@ -58,12 +58,16 @@ const useStyles = createStyles((theme) => ({
 
     "&:hover": {
       backgroundColor:
-        theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 7 : 5],
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[6]
+          : theme.colors.gray[1],
     },
   },
   userActive: {
     backgroundColor:
-      theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 7 : 5],
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[6]
+        : theme.colors.gray[2],
   },
   link: {
     display: "block",
@@ -79,7 +83,7 @@ const useStyles = createStyles((theme) => ({
       backgroundColor:
         theme.colorScheme === "dark"
           ? theme.colors.dark[6]
-          : theme.colors.gray[0],
+          : theme.colors.gray[1],
     },
   },
 

@@ -1,6 +1,7 @@
+import { Grid, Stack } from "@mantine/core";
 import type { NextPage, GetServerSideProps } from "next";
+import { ExperienceCard } from "../components/ExperienceCard/ExperienceCard";
 import { HeaderMenuColored } from "../components/header/Header";
-import { HomeContent } from "../components/HomeContent/HomeContent";
 
 export interface IExperience {
   _id: string;
@@ -10,23 +11,40 @@ export interface IExperience {
 }
 
 interface Props {
-  data: [IExperience];
+  experiences: [IExperience];
 }
 
-const Home: NextPage<Props> = ({ data }) => {
+const Home: NextPage<Props> = ({ experiences }) => {
   return (
     <>
       <HeaderMenuColored links={[{ link: "/", label: "Adventures" }]} />
-      <HomeContent experiences={data} />
+
+      {
+        <Grid m={0}>
+          {experiences.map((experience) => {
+            const { _id, title, location, photos } = experience;
+            return (
+              <Grid.Col m={0} key={_id} xs={6} md={6} lg={4} mb={20}>
+                <ExperienceCard
+                  _id={_id}
+                  title={title}
+                  location={location}
+                  photos={photos}
+                />
+              </Grid.Col>
+            );
+          })}
+        </Grid>
+      }
     </>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch("http://localhost:4000/experiences");
-  const data = await res.json();
+  const experiences = await res.json();
 
-  return { props: { data } };
+  return { props: { experiences } };
 };
 
 export default Home;
