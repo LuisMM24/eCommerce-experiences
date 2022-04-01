@@ -20,14 +20,6 @@ import { GoogleButton, FacebookButton } from "../SocialButtons/SocialButtons";
 import { getStrength } from "./PasswordStrength/PasswordStrength";
 import { PasswordStrength } from "./PasswordStrength/PasswordStrength";
 import { authContext } from "../../context/authContext";
-import { Value } from "sass";
-
-interface IValidateFields {
-  firstName?: string;
-  lastName?: string;
-  email: string;
-  password: string;
-}
 
 export function AuthenticationForm(props: PaperProps<"div">) {
   const [type, toggle] = useToggle("login", ["login", "register"]);

@@ -7,10 +7,11 @@ import {
   signUpWithFacebook,
   signUpWithGoogle,
   LoginWithEmailAndPassword,
+  signOut,
 } from "../firebase/firebase";
 import { syncUserData } from "../utils/auth-request";
 interface Props {
-  children?: JSX.Element;
+  children?: JSX.Element | JSX.Element[];
 }
 
 interface FormValues {
@@ -30,6 +31,7 @@ type AuthContextType = {
     formValues: FormValues
   ) => void | Promise<void>;
   facebookSignUpHandler: (type: string) => void | Promise<void>;
+  signOut: () => Promise<void> | void;
 };
 
 export const authContext = createContext<AuthContextType>({
@@ -39,11 +41,11 @@ export const authContext = createContext<AuthContextType>({
   googleSignUpHandler: () => {},
   emailAndPasswordSignUpHandler: () => {},
   facebookSignUpHandler: () => {},
+  signOut: () => {},
 });
 
 export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const currentUser = useAuth();
-
   const [hasError, setHasError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -96,6 +98,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
         facebookSignUpHandler: facebookSignUpHandler,
         emailAndPasswordSignUpHandler: emailAndPasswordSignUpHandler,
         googleSignUpHandler: googleSignUpHandler,
+        signOut: signOut,
       }}
     >
       {children}

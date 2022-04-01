@@ -69,9 +69,9 @@ export const useAuth = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setCurrentUser(user);
+        return setCurrentUser(user);
       }
-      setCurrentUser(null);
+      return setCurrentUser(null);
     });
   }, []);
   return currentUser;
