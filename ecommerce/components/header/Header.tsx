@@ -98,9 +98,13 @@ interface HeaderSearchProps {
     label: string;
     links?: { link: string; label: string }[];
   }[];
+  marginBottom?: number;
 }
 
-export function HeaderMenuColored({ links }: HeaderSearchProps) {
+export function HeaderMenuColored({
+  links,
+  marginBottom = 120,
+}: HeaderSearchProps) {
   const { currentUser, signOut } = useContext(authContext);
   const [opened, toggleOpened] = useBooleanToggle(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
@@ -139,19 +143,14 @@ export function HeaderMenuColored({ links }: HeaderSearchProps) {
     }
 
     return (
-      <a
-        key={link.label}
-        href={link.link}
-        className={classes.link}
-        onClick={(event) => event.preventDefault()}
-      >
+      <a key={link.label} href={link.link} className={classes.link}>
         {link.label}
       </a>
     );
   });
 
   return (
-    <Header height={56} className={classes.header} mb={120}>
+    <Header height={56} className={classes.header} mb={marginBottom}>
       <Container>
         <div className={classes.inner}>
           <Image
