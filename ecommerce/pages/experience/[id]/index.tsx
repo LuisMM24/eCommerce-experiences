@@ -9,6 +9,7 @@ export interface IFullExperience extends IExperienceCard {
   group: string;
   level: string;
   dates: string;
+  bookedSlots: number;
 }
 interface Props {
   experience: IFullExperience;

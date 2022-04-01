@@ -95,7 +95,7 @@ a {
   text-decoration: none;
 }
 span {
-  display: block;
+  display: inline-flex;
 }
 * {
   box-sizing: border-box;
@@ -124,7 +124,7 @@ span {
   z-index: 9999;
 }
 .expTitle {
-  font-size: clamp(2rem, 4vw + 1rem, 7rem);
+  font-size: clamp(2rem, 4vw + 1rem, 3.75vw);
   font-family: var(--titleFont);
   text-transform: uppercase;
   color: #ec542d;

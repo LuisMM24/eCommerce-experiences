@@ -11,7 +11,6 @@ export interface IExperienceCard {
   photos: [string];
   price: number;
   availableSlots: number;
-  bookedSlots: number;
 }
 
 interface Props {
@@ -26,15 +25,8 @@ const Home: NextPage<Props> = ({ experiences }) => {
       {
         <Grid m={0}>
           {experiences.map((experience) => {
-            const {
-              _id,
-              title,
-              location,
-              photos,
-              price,
-              availableSlots,
-              bookedSlots,
-            } = experience;
+            const { _id, title, location, photos, price, availableSlots } =
+              experience;
             return (
               <Grid.Col m={0} key={_id} xs={6} md={6} lg={4} mb={20}>
                 <Link href={`/experience/${_id}`}>
@@ -46,7 +38,6 @@ const Home: NextPage<Props> = ({ experiences }) => {
                       photos={photos}
                       price={price}
                       availableSlots={availableSlots}
-                      bookedSlots={bookedSlots}
                     />
                   </a>
                 </Link>

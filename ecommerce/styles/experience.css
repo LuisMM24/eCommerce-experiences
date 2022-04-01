@@ -1,7 +1,6 @@
 .expIntroduction {
   display: flex;
   justify-content: center;
-  background-color: red;
   min-height: 120vh;
   background-repeat: no-repeat;
   background-position: center;
