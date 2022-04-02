@@ -24,7 +24,6 @@ const getExperience = async (
   console.log(id);
   try {
     const experience = await Experience.findOne({ _id: id });
-    console.log(experience.title);
     res.status(200).json(experience);
   } catch (error) {
     res.sendStatus(404);

@@ -1,0 +1,82 @@
+.expIntroduction {
+  display: flex;
+  justify-content: center;
+  min-height: 120vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  text-align: center;
+  margin-bottom: 50px;
+}
+.introSection {
+  padding: 14vw;
+}
+
+.expDescription {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20vw;
+  padding: 0 20px;
+}
+.descriptionCat {
+  list-style: none;
+  margin-bottom: 20px;
+  width: 200px;
+  font-family: var(--primaryFont);
+}
+.catName {
+  display: flex;
+  font-weight: 700;
+  margin-bottom: -5px;
+}
+.descriptionField {
+  width: 600px;
+  font-size: 2rem;
+  font-family: var(--secondaryFont);
+}
+
+.expSectionButtons {
+  display: inline-flex;
+  width: 100%;
+  justify-content: right;
+  position: absolute;
+  position: sticky;
+  bottom: 40px;
+}
+.svgLocation {
+  width: 30px;
+}
+.priceAndPurchaseWrapper {
+  border-radius: 2px;
+  display: inline-flex;
+  background-color: #ec542d;
+  margin: 0 1vw;
+  overflow: hidden;
+}
+.actionButton {
+  padding: 1rem;
+}
+.priceText {
+  font-family: var(--secondaryFont);
+  font-weight: 600;
+  font-style: italic;
+}
+.bookButton {
+  font-family: var(--primaryFont);
+  background-color: white;
+  border: none;
+  gap: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+.bookButton:hover {
+  transition: 0.5s;
+  background-color: black;
+  color: white;
+}
+.bookSpan {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
