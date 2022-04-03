@@ -25,14 +25,15 @@ const useStyles = createStyles((theme) => ({
 const  ButtonsGroup = () => {
     const { classes } = useStyles();
 
-    const urlParam = useLocation().pathname.split('/').reverse()[0];
+    const urlParam1 = useLocation().pathname.split('/').reverse()[0];
+    const urlParam2 = useLocation().pathname.split('/').reverse()[1];
 
     return (
         <Group grow spacing={0}>
-            <Button variant={urlParam === 'users' ? 'filled' : 'default'} className={classes.button} component={Link} to="/dashboard/users">
+            <Button variant={(urlParam1 === 'users' || urlParam2 === 'users') ? 'filled' : 'default'} className={classes.button} component={Link} to="/dashboard/users">
                 Users
             </Button>
-            <Button variant={urlParam === 'experiences' ? 'filled' : 'default'} className={classes.button} component={Link} to="/dashboard/experiences">
+            <Button variant={(urlParam1 === 'experiences' || urlParam2 === 'experiences') ? 'filled' : 'default'} className={classes.button} component={Link} to="/dashboard/experiences">
                 Experiences
             </Button>
         </Group>

@@ -9,16 +9,14 @@ const ExperiencesList = () => {
     const {currentUser} = useContext(authContext)
     const experiences = useExperiences();
 
-    if (!currentUser) {
-        return (<p>Please log in</p>)
-    }
     return (
         <>
+            {!currentUser && <p>Please log in</p>}
             {experiences.status === 'loading' && <p>Loading...</p>}
             {experiences.status === 'error' && <p>Could not fetch items</p>}
-            {experiences.status === 'success' && 
+            {(experiences.status === 'success' && currentUser) && 
             <div className="list-container">
-                <Title order={3}>Experiences</Title>
+                <Title order={3}>Experiences ({experiences.data.length})</Title>
                 <ul className="experiences-list">
                     {experiences.data.map((item: { _id: any; photos: string[]; title: string; availableSlots: string; bookedSlots: string; level: string; location: string; }) => (
                     <li key={item._id}>

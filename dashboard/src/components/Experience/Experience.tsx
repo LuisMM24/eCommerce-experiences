@@ -89,6 +89,7 @@ const Experience = () => {
             {isError && <span>Error: there was an error loading this item. Please try again.</span>}
             {isSuccess && 
             <Box sx={{ maxWidth: 800, gap: 'md' }} mx="auto">
+                <Title order={3}>{data?.title}</Title>
                 <form style={{width: '500px'}}  onSubmit={form.onSubmit((values) => handleSubmit(values))}>
                     <TextInput mt={10} label="Title" {...form.getInputProps('title')} required />
                     <TextInput mt={10} label="Location" {...form.getInputProps('location')} required />

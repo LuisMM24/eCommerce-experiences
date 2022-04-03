@@ -16,3 +16,18 @@ if (!response.ok) {
 
 return response.json();
 };
+
+export const deleteExperience = async (id: string) => {
+    const response = await fetch(
+        `http://localhost:4000/experiences/${id}`,
+        {
+        method: "DELETE"
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error(response.json().message);
+    }
+
+    return true;
+    };
