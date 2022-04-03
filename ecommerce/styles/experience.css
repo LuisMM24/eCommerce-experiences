@@ -52,7 +52,6 @@
   display: inline-flex;
   background-color: #ec542d;
   margin: 0 1vw;
-  overflow: hidden;
 }
 .actionButton {
   padding: 1rem;
@@ -66,10 +65,18 @@
   font-family: var(--primaryFont);
   background-color: white;
   border: none;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   gap: 5px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  cursor: pointer;
 }
+
+.bookButton:hover {
+  transition: 0.5s;
+  background-color: black;
+  color: white;
+}
+
 .loginLink {
   color: lightskyblue;
 }
@@ -79,11 +86,7 @@
 .experienceModalText {
   margin-bottom: 20px;
 }
-.bookButton:hover {
-  transition: 0.5s;
-  background-color: black;
-  color: white;
-}
+
 .bookSpan {
   display: inline-flex;
   align-items: center;

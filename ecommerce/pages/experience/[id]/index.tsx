@@ -26,7 +26,7 @@ interface Props {
 const index: NextPage<Props> = ({ experience }) => {
   const { currentUser } = useContext(authContext);
   const router = useRouter();
-  const [isModalOpenned, setIsModalOpenned] = useState<boolean>(false);
+  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
   const {
     _id,
     title,
@@ -49,7 +49,7 @@ const index: NextPage<Props> = ({ experience }) => {
       router.push("/checkout");
       return;
     }
-    setIsModalOpenned(true);
+    setIsModalOpened(true);
   };
   return (
     <>
@@ -90,9 +90,9 @@ const index: NextPage<Props> = ({ experience }) => {
         </div>
       </article>
       <Modal
-        opened={isModalOpenned}
+        opened={isModalOpened}
         title="Before to book, login or create an account 🤖"
-        onClose={() => setIsModalOpenned(false)}
+        onClose={() => setIsModalOpened(false)}
         transition="fade"
         transitionDuration={600}
       >
