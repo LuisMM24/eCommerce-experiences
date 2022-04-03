@@ -12,6 +12,7 @@ import {
   Button,
   Divider,
   Anchor,
+  LoadingOverlay,
 } from "@mantine/core";
 import { GoogleButton, FacebookButton } from "../SocialButtons/SocialButtons";
 
@@ -61,11 +62,20 @@ export function AuthenticationForm(props: PaperProps<"div">) {
   });
 
   return (
-    <Paper radius="md" p="xl" withBorder {...props}>
+    <Paper
+      style={{
+        position: "relative",
+        overflow: "hidden",
+      }}
+      radius="md"
+      p="xl"
+      withBorder
+      {...props}
+    >
       <Text size="lg" weight={500}>
         Welcome to LandScapes, {type} with
       </Text>
-
+      <LoadingOverlay visible={isLoading} />
       <Group grow mb="md" mt="md">
         <GoogleButton onClick={() => googleSignUpHandler(type)} radius="xl">
           Google
@@ -161,9 +171,7 @@ export function AuthenticationForm(props: PaperProps<"div">) {
               ? "Already have an account? Login"
               : "Don't have an account? Register"}
           </Anchor>
-          <Button type="submit" disabled={isLoading}>
-            {upperFirst(type)}
-          </Button>
+          <Button type="submit">{upperFirst(type)}</Button>
         </Group>
       </form>
     </Paper>

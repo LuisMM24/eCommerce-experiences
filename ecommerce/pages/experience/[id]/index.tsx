@@ -1,9 +1,17 @@
+import { Modal } from "@mantine/core";
 import { NextPage, GetServerSideProps } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
 import { Plus } from "tabler-icons-react";
 import { IExperienceCard } from "../..";
 import { DescriptionCategory } from "../../../components/DescriptionCategory/DescriptionCategory";
 import { HeaderMenuColored } from "../../../components/header/Header";
+import { authContext } from "../../../context/authContext";
 
+//svg
+import modalImage from "../../../assets/img/modalCheckout.svg";
+import { locationIcon } from "../../../utils/locationIcon";
 export interface IFullExperience extends IExperienceCard {
   description: string;
   group: string;
@@ -15,29 +23,10 @@ interface Props {
   experience: IFullExperience;
 }
 
-const svgLocation = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="svgLocation"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-    />
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-    />
-  </svg>
-);
-
 const index: NextPage<Props> = ({ experience }) => {
+  const { currentUser } = useContext(authContext);
+  const router = useRouter();
+  const [isModalOpenned, setIsModalOpenned] = useState<boolean>(false);
   const {
     _id,
     title,
@@ -54,7 +43,14 @@ const index: NextPage<Props> = ({ experience }) => {
   const bgImage = {
     backgroundImage: `url(${photos[0]})`,
   };
-  console.log(title);
+
+  const handleBookButton = (): void => {
+    if (currentUser) {
+      router.push("/checkout");
+      return;
+    }
+    setIsModalOpenned(true);
+  };
   return (
     <>
       <HeaderMenuColored
@@ -66,7 +62,7 @@ const index: NextPage<Props> = ({ experience }) => {
         <section className="introSection">
           <h3 className="expTitle">{title}</h3>
           <span className="expLocation">
-            {svgLocation}
+            {locationIcon}
             {location}
           </span>
         </section>
@@ -83,13 +79,36 @@ const index: NextPage<Props> = ({ experience }) => {
       <article className="expSectionButtons">
         <div className="priceAndPurchaseWrapper">
           <span className="actionButton priceText">Starting from {price}€</span>
-          <button className="actionButton bookButton">
+          <button
+            className="actionButton bookButton"
+            onClick={handleBookButton}
+          >
             <span className="bookSpan">
               Book now <Plus width={15} />
             </span>
           </button>
         </div>
       </article>
+      <Modal
+        opened={isModalOpenned}
+        title="Before to book, login or create an account 🤖"
+        onClose={() => setIsModalOpenned(false)}
+        transition="fade"
+        transitionDuration={600}
+      >
+        <h4 className="experienceModalText">
+          Please,{" "}
+          <Link href="/login">
+            <a className="loginLink">login&nbsp;</a>
+          </Link>
+          or&nbsp;
+          <Link href="/login">
+            <a className="loginLink">register&nbsp;</a>
+          </Link>
+          to book this experience and proceed to checkout
+        </h4>
+        <img src={modalImage.src} alt="payment guy" />
+      </Modal>
     </>
   );
 };
