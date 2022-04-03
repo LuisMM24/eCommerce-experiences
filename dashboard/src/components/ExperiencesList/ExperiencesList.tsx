@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import ExperienceCard from '../ExperienceCard/ExperienceCard'
+import React, { useState, useEffect, useContext } from 'react'
 import { Title, ScrollArea } from '@mantine/core';
+import {authContext} from '../../context/authContext'
+import ExperienceCard from '../ExperienceCard/ExperienceCard'
 import useExperiences from '../../query-hooks/useExperiences';
 import './ExperienceList.css';
 
 const ExperiencesList = () => {
-
+    const {currentUser} = useContext(authContext)
     const experiences = useExperiences();
-    
+
+    if (!currentUser) {
+        return (<p>Please log in</p>)
+    }
     return (
         <>
             {experiences.status === 'loading' && <p>Loading...</p>}

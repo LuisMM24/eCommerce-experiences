@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; 
 import { Navbar, SegmentedControl, Container, Text, Button, Group, createStyles } from '@mantine/core';
 import {
@@ -20,7 +20,9 @@ import {
     SwitchHorizontal,
     } from 'tabler-icons-react';
 
+import {authContext} from '../../context/authContext'
 import ButtonsGroup from '../ButtonsGroup/ButtonsGroup'
+import { signOut } from 'firebase/auth';
 
 const useStyles = createStyles((theme, _params, getRef) => {
     const icon = getRef('icon');
@@ -111,10 +113,17 @@ type CardProps = {
 }
 
 const NavbarSegmented = ({ section, setSection }: CardProps): JSX.Element => {
+
+    const context = useContext(authContext);
     const { classes, cx } = useStyles();
     const [active, setActive] = useState('Orders');
 
     const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        await context.signOut();
+        navigate('/dashboard/auth');
+    }
 
     useEffect(() => {
         navigate(`/dashboard/${section}`)
@@ -136,39 +145,27 @@ const NavbarSegmented = ({ section, setSection }: CardProps): JSX.Element => {
     // ));
 
     return (
-    <Navbar height={840} width={{ sm: 300 }} p="md" className={classes.navbar} sx={{position: 'sticky', top: 0, left: 0}}>
+    <Navbar width={{ sm: 300 }} p="md" className={classes.navbar} sx={{position: 'sticky', top: 0, left: 0}}>
+        <Navbar.Section >
+           
+        </Navbar.Section>
         <Navbar.Section>
-            <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
-                admin@experiences.io
-            </Text>
-
-            {/* <SegmentedControl
-                value={section}
-                onChange={() => setSection(section)}
-                transitionTimingFunction="ease"
-                fullWidth
-                data={[
-                { label: 'Users', value: 'users' },
-                { label: 'Experiences', value: 'experiences' },
-                ]}
-            /> */}
             <ButtonsGroup />
         </Navbar.Section>
-
         {/* <Navbar.Section grow mt="xl">
         {links}
         </Navbar.Section> */}
 
-        <Navbar.Section className={classes.footer}>
-            <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-                <SwitchHorizontal className={classes.linkIcon} />
-                <span>Change users</span>
-            </a>
-
-            <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+        <Navbar.Section className={classes.footer} sx={{marginTop: 'auto'}}>
+            <Text weight={500} size="sm" className={classes.title} color="dimmed" >
+                {context?.currentUser?.email}
+            </Text>
+            <Group sx={{ display: 'flex'}}>
+            <a href="#" className={classes.link} onClick={handleLogout}>
                 <Logout className={classes.linkIcon} />
-                <span>Logout</span>
+                <span>{context?.currentUser ? 'Log out' : 'Log in'}</span>
             </a>
+            </Group>
         </Navbar.Section>
     </Navbar>
     );

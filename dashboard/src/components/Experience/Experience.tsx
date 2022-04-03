@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams, Link } from 'react-router-dom';
 import { TextInput, Checkbox, Text, Title, Textarea, Button, Group, Box, Container } from '@mantine/core';
 import { useForm } from '@mantine/form';
-
+import { useMutation, useQueryClient } from "react-query";
+// import useUpdate from '../../query-hooks/useUpdate'
+import {updateExperience} from '../../api/Api'
 import useExperience from '../../query-hooks/useExperience';
 import ImgDropzone from '../Dropzone/Dropzone';
+import { AxiosResponse } from 'axios';
+import { MutateOptions } from 'react-query';
 
 // interface FormValues {
 //     title: string,
@@ -20,15 +23,24 @@ import ImgDropzone from '../Dropzone/Dropzone';
 // }
 
 const Experience = () => {
+    // const [id, setId] = useState(null);
+    // const params = useParams();
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
-    const [spinner, setSpinner] = useState(false)
     const { pathname } = useLocation();
     const id = pathname.split('/')[3];
 
-    const {isLoading, isError, isSuccess, data, error } = useExperience(id) || {};
-    
-    const navigate = useNavigate();
+    const {isLoading, isError, isSuccess, data } = useExperience(id) || {};
+    const { mutateAsync, isLoading: isMutating } = useMutation(updateExperience , {
+        onSuccess: () => queryClient.invalidateQueries(['experiences', id]),
+    })
 
+    const handleSubmit = async (formData: { title?: string; location?: string; description?: string; group?: string; level?: string; dates?: string; price?: string; availableSlots?: string; bookedSlots?: string; id?: string; }) => {
+        await mutateAsync({id, ...formData})
+        navigate("/dashboard/experiences")
+    }
+    
     
     const form = useForm({
         initialValues: {
@@ -49,7 +61,14 @@ const Experience = () => {
         },
     });
 
+    // const { mutate } = useUpdate();
+    // const handleSubmit = async (info: MutateOptions<AxiosResponse<any, any>, unknown, void, unknown> | undefined) => {
+    //     mutate(id, info);
+    //     navigate('/dashboard/experiences')
+    // }
+    
     useEffect(() => {
+
         form.setValues({
             title: `${data?.title}`, 
             location: `${data?.location}`,
@@ -70,7 +89,7 @@ const Experience = () => {
             {isError && <span>Error: there was an error loading this item. Please try again.</span>}
             {isSuccess && 
             <Box sx={{ maxWidth: 800, gap: 'md' }} mx="auto">
-                <form style={{width: '500px'}}  onSubmit={form.onSubmit((values) => console.log(values))}>
+                <form style={{width: '500px'}}  onSubmit={form.onSubmit((values) => handleSubmit(values))}>
                     <TextInput mt={10} label="Title" {...form.getInputProps('title')} required />
                     <TextInput mt={10} label="Location" {...form.getInputProps('location')} required />
                     <Textarea mt={10} label="Description" autosize minRows={5} {...form.getInputProps('description')} required/>
@@ -85,12 +104,12 @@ const Experience = () => {
                     <Box mt={10} sx={{border: '1px solid lightgray', borderRadius: 6, padding: 12, }}>
                         {data?.photos.map((photo:string) => <img key={photo} src={`${photo}`} style={{height: 100}}/>)}
                     </Box>
-                    <Group mt={20}>
+                    {/* <Group mt={20}>
                         <ImgDropzone />
-                    </Group>
+                    </Group> */}
                     <Group position="right" mt="md">
                         <Button variant='outline' type="button" component={Link} to="/dashboard/experiences">Back</Button>
-                        {spinner ? <Button type="submit" loading>Submit</Button> : <Button type="submit">Submit</Button>}
+                        {isMutating ? <Button type="submit" loading>Submit</Button> : <Button type="submit">Submit</Button>}
                     </Group>
                 </form>
             </Box>}

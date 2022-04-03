@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { MantineProvider } from '@mantine/core';
+
+import { AuthContextProvider } from "./context/authContext";
 import Navbar from './components/DashboardNavbar/DashboardNavbar';
 import { UsersTable as Users } from './components/Users/Users';
 import ExperiencesList from './components/ExperiencesList/ExperiencesList';
 import Experience from './components/Experience/Experience';
+import {AuthenticationForm as Login} from './components/Login/Login'
 
 import { data } from './data/users';
 
@@ -20,26 +23,17 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider>
+      <AuthContextProvider>        
         <Router>
-        <Navbar section={section} setSection={setSection}/>
+          <Navbar section={section} setSection={setSection}/>
           <Routes>
-          <Route path='/dashboard/experiences' element={<ExperiencesList />} />
-          <Route path='/dashboard/users' element={<Users data={users} />} />
-          <Route path='/dashboard/experiences/:experienceId' element={<Experience />} />
-
-          {/* <div className="App flex-row">
-              <Navbar section={section} setSection={setSection}/>
-              <div>
-                {section === 'users' && (
-                  <Users data={users}/>
-                  )}
-                {section === 'experiences' && (
-                  <ExperiencesList />
-                  )}
-              </div>
-            </div> */}
+            <Route path='/dashboard/auth' element={<Login />} />
+            <Route path='/dashboard/experiences' element={<ExperiencesList />} />
+            <Route path='/dashboard/users' element={<Users data={users} />} />
+            <Route path='/dashboard/experiences/:experienceId' element={<Experience />} />
           </Routes>
         </Router>
+      </AuthContextProvider>
       </MantineProvider>
     </QueryClientProvider>
   )
