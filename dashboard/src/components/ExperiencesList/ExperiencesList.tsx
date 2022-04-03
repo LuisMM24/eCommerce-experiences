@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Title, ScrollArea } from '@mantine/core';
+import { Title, Group, Button } from '@mantine/core';
 import {authContext} from '../../context/authContext'
 import ExperienceCard from '../ExperienceCard/ExperienceCard'
 import useExperiences from '../../query-hooks/useExperiences';
@@ -16,7 +16,10 @@ const ExperiencesList = () => {
             {experiences.status === 'error' && <p>Could not fetch items</p>}
             {(experiences.status === 'success' && currentUser) && 
             <div className="list-container">
+                <Group position='apart'>
                 <Title order={3}>Experiences ({experiences.data.length})</Title>
+                <Button>+ CREATE</Button>
+                </Group>
                 <ul className="experiences-list">
                     {experiences.data.map((item: { _id: any; photos: string[]; title: string; availableSlots: string; bookedSlots: string; level: string; location: string; }) => (
                     <li key={item._id}>

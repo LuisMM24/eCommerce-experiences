@@ -114,14 +114,14 @@ type CardProps = {
 
 const NavbarSegmented = ({ section, setSection }: CardProps): JSX.Element => {
 
-    const context = useContext(authContext);
+    const { currentUser, signOut } = useContext(authContext);
     const { classes, cx } = useStyles();
     const [active, setActive] = useState('Orders');
 
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        await context.signOut();
+        await signOut();
         navigate('/dashboard/auth');
     }
 
@@ -155,15 +155,17 @@ const NavbarSegmented = ({ section, setSection }: CardProps): JSX.Element => {
         {/* <Navbar.Section grow mt="xl">
         {links}
         </Navbar.Section> */}
-
+        <Navbar.Section sx={{marginTop: 'auto'}}>
+            <Button>+ CREATE</Button>
+        </Navbar.Section>
         <Navbar.Section className={classes.footer} sx={{marginTop: 'auto'}}>
             <Text weight={500} size="sm" className={classes.title} color="dimmed" >
-                {context?.currentUser?.email}
+                {currentUser?.email}
             </Text>
             <Group sx={{ display: 'flex'}}>
             <a href="#" className={classes.link} onClick={handleLogout}>
                 <Logout className={classes.linkIcon} />
-                <span>{context?.currentUser ? 'Log out' : 'Log in'}</span>
+                <span>{currentUser ? 'Log out' : 'Log in'}</span>
             </a>
             </Group>
         </Navbar.Section>
