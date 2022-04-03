@@ -13,6 +13,8 @@ import {
   Avatar,
   Text,
   Container,
+  Drawer,
+  MenuItem,
 } from "@mantine/core";
 import { Settings, Logout } from "tabler-icons-react";
 import { useBooleanToggle } from "@mantine/hooks";
@@ -226,6 +228,33 @@ export function HeaderMenuColored({
             className={classes.burger}
             size="sm"
           />
+          <Drawer
+            opened={opened}
+            onClose={() => toggleOpened(false)}
+            title={items}
+            padding="xl"
+            size="lg"
+            position="right"
+          >
+            {currentUser && (
+              <Button
+                variant="gradient"
+                gradient={{ from: "indigo", to: "cyan" }}
+                onClick={async () => await signOut()}
+              >
+                Logout
+              </Button>
+            )}
+            {!currentUser && (
+              <Button
+                variant="gradient"
+                gradient={{ from: "indigo", to: "cyan" }}
+                onClick={() => router.push("/login")}
+              >
+                Login
+              </Button>
+            )}
+          </Drawer>
         </div>
       </Container>
     </Header>

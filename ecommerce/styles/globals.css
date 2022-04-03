@@ -61,7 +61,6 @@ input,
 button,
 textarea,
 select {
-  cursor: pointer;
   font: inherit;
 }
 
@@ -121,7 +120,7 @@ span {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  z-index: 9999;
+  z-index: 2;
 }
 .expTitle {
   font-size: clamp(2rem, 4vw + 1rem, 3.75vw);

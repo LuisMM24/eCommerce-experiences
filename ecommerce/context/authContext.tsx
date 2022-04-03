@@ -51,10 +51,13 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
   const googleSignUpHandler = async (type: string): Promise<void> => {
     try {
+      setIsLoading(true);
       await signUpWithGoogle();
       await syncUserData(type);
     } catch (err: any) {
       console.log(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -79,13 +82,16 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       setIsLoading(false);
     }
   };
+
   const facebookSignUpHandler = async (type: string): Promise<void> => {
     try {
+      setIsLoading(true);
       await signUpWithFacebook();
       await syncUserData(type);
-      console.log("Done!");
     } catch (err: any) {
       console.log(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
