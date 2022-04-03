@@ -8,9 +8,17 @@ const getExperiences = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const experiences = await Experience.find();
-
-    res.status(200).json(experiences);
+    const { page } = req.query;
+    if (page) {
+      // limit query for pagination
+      const experiences = await Experience.find()
+        .skip((Number(page) - 1) * 6)
+        .limit(6);
+      res.status(200).json(experiences);
+    } else {
+      const experiences = await Experience.find();
+      res.status(200).json(experiences);
+    }
   } catch (error) {
     res.sendStatus(404);
   }
