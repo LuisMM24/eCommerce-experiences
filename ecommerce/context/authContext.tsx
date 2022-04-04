@@ -55,7 +55,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       await signUpWithGoogle();
       await syncUserData(type);
     } catch (err: any) {
-      console.log(err.message);
+      setHasError(true);
     } finally {
       setIsLoading(false);
     }

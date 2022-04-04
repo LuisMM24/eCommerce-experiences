@@ -1,12 +1,17 @@
-import { Modal } from "@mantine/core";
 import { NextPage, GetServerSideProps } from "next";
-import Link from "next/link";
+// hooks
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
+// icons
 import { Plus } from "tabler-icons-react";
+// interfaces
 import { IExperienceCard } from "../..";
+// components
+import Link from "next/link";
+import { Modal } from "@mantine/core";
 import { DescriptionCategory } from "../../../components/DescriptionCategory/DescriptionCategory";
 import { HeaderMenuColored } from "../../../components/header/Header";
+// context
 import { authContext } from "../../../context/authContext";
 
 //svg
@@ -46,7 +51,7 @@ const index: NextPage<Props> = ({ experience }) => {
 
   const handleBookButton = (): void => {
     if (currentUser) {
-      router.push("/checkout");
+      router.push(`/checkout/${_id}`);
       return;
     }
     setIsModalOpened(true);

@@ -48,7 +48,7 @@ const Home: NextPage<Props> = ({ data }) => {
         loader={<Loader size="xl" />}
         endMessage={"END"}
       >
-        <Grid m={0}>
+        <Grid m={0} gutter={18}>
           {experiences.map((experience) => {
             const { _id, title, location, photos, price, availableSlots } =
               experience;

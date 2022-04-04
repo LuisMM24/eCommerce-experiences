@@ -29,7 +29,6 @@ const getExperience = async (
   next: NextFunction
 ): Promise<void> => {
   const { id } = req.params;
-  console.log(id);
   try {
     const experience = await Experience.findOne({ _id: id });
     res.status(200).json(experience);

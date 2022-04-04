@@ -27,7 +27,7 @@ export function AuthenticationForm(props: PaperProps<"div">) {
   const router = useRouter();
   const setRegisterRules = (value: string): boolean => {
     if (type === "register") {
-      return value.length < 2;
+      return value.length > 2;
     }
     return value === value;
   };
@@ -42,6 +42,7 @@ export function AuthenticationForm(props: PaperProps<"div">) {
   } = useContext(authContext);
 
   useEffect(() => {
+    console.log(hasError);
     if (currentUser) router.push("/");
   }, [currentUser, router]);
 
